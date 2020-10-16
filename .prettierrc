@@ -2,7 +2,7 @@
   "singleQuote": true,
   "tabWidth": 2,
   "endOfLine": "crlf",
-  "printWidth": 120,
+  "printWidth": 80,
   "arrowParens": "avoid",
   "trailingComma": "none"
 }

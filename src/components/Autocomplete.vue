@@ -1,5 +1,7 @@
 <template>
-  <div><Input @input="searchHandler($event)" /> <Results :results="this.results" /></div>
+  <div>
+    <Input @input="searchHandler($event)" /> <Results :results="this.results" />
+  </div>
 </template>
 
 <script>

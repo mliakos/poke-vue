@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <ul v-if="this.results">
-      <Result v-for="result in this.results" :key="result.name">{{ result.name }}</Result>
-    </ul>
+  <div v-if="this.results">
+    <Result
+      :result-data="this.results"
+      v-for="result in this.results"
+      :key="result.name"
+      >{{ result.name }}</Result
+    >
   </div>
 </template>
 

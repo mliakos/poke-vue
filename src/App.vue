@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <Autocomplete />
+    <Menu />
   </div>
 </template>
 
 <script>
-import Autocomplete from './components/Autocomplete.vue';
+import Menu from './components/Menu.vue';
 
 export default {
   name: 'App',
   components: {
-    Autocomplete
+    Menu
   }
 };
 </script>

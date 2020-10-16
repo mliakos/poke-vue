@@ -1,7 +1,7 @@
 <template>
-  <li>
+  <div class="card">
     <slot> </slot>
-  </li>
+  </div>
 </template>
 
 <script>
@@ -10,4 +10,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+card {
+  display: inline;
+  border: 1px solid;
+}
+</style>
