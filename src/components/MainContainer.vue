@@ -13,17 +13,17 @@
       >
     </nav>
 
-    <Results :data="getTypeData" />
+    <PokemonContainer :data="getTypeData" />
   </div>
 </template>
 
 <script>
-import Results from '../components/Results';
+import PokemonContainer from '../components/PokemonContainer';
 
 export default {
   name: 'MainContainer',
   components: {
-    Results
+    PokemonContainer
   },
   data() {
     return {
@@ -80,6 +80,7 @@ export default {
       }
     }
   },
+
   mounted() {
     this.fetchTypes(this.pokemonTypes[0]);
   }
