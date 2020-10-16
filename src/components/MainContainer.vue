@@ -1,22 +1,34 @@
 <template>
-  <nav>
-    <a
-      v-for="(type, index) in types"
-      :key="type"
-      @click="handleClick(index)"
-      :class="getClass(index)"
-      >{{ type }}</a
-    >
-  </nav>
+  <div>
+    <!-- This could be outsourced into its own component
+    but then we would need Vuex to share state with its sibling.
+     -->
+    <nav>
+      <a
+        v-for="(pokemonType, index) in pokemonTypes"
+        :key="pokemonType"
+        @click="handleClick(index)"
+        :class="getClass(index)"
+        >{{ pokemonType }}</a
+      >
+    </nav>
+
+    <Results :data="getTypeData" />
+  </div>
 </template>
 
 <script>
+import Results from '../components/Results';
+
 export default {
-  name: 'Menu',
+  name: 'MainContainer',
+  components: {
+    Results
+  },
   data() {
     return {
-      typesData: [],
-      types: [
+      pokemonTypesData: [],
+      pokemonTypes: [
         'ground',
         'water',
         'fire',
@@ -28,7 +40,15 @@ export default {
       activeElementIndex: 0
     };
   },
-  computed: {},
+  computed: {
+    getTypeData() {
+      const index = this.pokemonTypesData.findIndex(
+        e => e.name === this.pokemonTypes[this.activeElementIndex]
+      );
+
+      return this.pokemonTypesData[index];
+    }
+  },
   methods: {
     fetchTypes(type) {
       fetch(`https://pokeapi.co/api/v2/type/${type}`)
@@ -37,7 +57,7 @@ export default {
             return res.json();
           }
         })
-        .then(result => this.typesData.push(result))
+        .then(result => this.pokemonTypesData.push(result))
         .catch(e => console.log(e));
     },
     handleClick(index) {
@@ -45,8 +65,10 @@ export default {
         this.activeElementIndex = index;
 
         // Fetch type only if it has not been fetched yet
-        if (!this.typesData.find(e => e.name === this.types[index])) {
-          this.fetchTypes(this.types[index]);
+        if (
+          !this.pokemonTypesData.find(e => e.name === this.pokemonTypes[index])
+        ) {
+          this.fetchTypes(this.pokemonTypes[index]);
         }
       }
     },
@@ -59,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchTypes(this.types[0]);
+    this.fetchTypes(this.pokemonTypes[0]);
   }
 };
 </script>
@@ -83,6 +105,8 @@ nav a.active {
 
 nav {
   border: 1px solid;
+  border-radius: 2px;
+
   width: 50%;
   margin: 0 auto;
   overflow: hidden;

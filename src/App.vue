@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <Menu />
+    <MainContainer />
   </div>
 </template>
 
 <script>
-import Menu from './components/Menu.vue';
+import MainContainer from './components/MainContainer';
 
 export default {
   name: 'App',
   components: {
-    Menu
+    MainContainer
   }
 };
 </script>

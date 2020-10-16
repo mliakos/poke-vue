@@ -1,10 +1,10 @@
 <template>
-  <div v-if="this.results">
+  <div class="results" v-if="data">
     <Result
-      :result-data="this.results"
-      v-for="result in this.results"
-      :key="result.name"
-      >{{ result.name }}</Result
+      :data="data.pokemon"
+      v-for="pokemon in data.pokemon"
+      :key="pokemon.pokemon.name"
+      >{{ pokemon.pokemon.name }}</Result
     >
   </div>
 </template>
@@ -16,22 +16,18 @@ export default {
   components: {
     Result
   },
-  props: ['results'],
-  name: 'Results'
+  props: ['data'],
+  name: 'Results',
+  methods: {
+    test() {
+      console.log(this.data.pokemon);
+    }
+  }
 };
 </script>
 
 <style scoped>
-Input {
-  border: none;
-  border-bottom: 1px solid;
-  width: 30%;
-  margin: 0 auto;
-  margin-top: 100px;
-  outline: 0 none;
-  display: block;
-}
-Input:focus {
-  border-color: rgba(216, 181, 22, 0.842);
+.results {
+  margin-top: 10px;
 }
 </style>

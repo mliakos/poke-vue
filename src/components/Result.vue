@@ -11,8 +11,11 @@ export default {
 </script>
 
 <style scoped>
-card {
-  display: inline;
+.card {
   border: 1px solid;
+  border-radius: 2px;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 5px;
 }
 </style>
