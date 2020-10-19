@@ -4,7 +4,7 @@
       <slot> </slot>
     </div>
     <PokemonDetails
-      :pokemonData="pokemonData[0]"
+      :pokemonData="[pokemonData]"
       v-if="this.pokemonData.length"
       v-show="isVisible"
     />

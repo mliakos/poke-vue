@@ -30,3 +30,7 @@ img {
   width: 30%;
 }
 </style>
+
+//TODO: Replace pokemonTypes array with an object to avoid using find /
+findIndex array methods (O^n complexity) //TODO: Transfer logic to parents and
+feed children data where possible
