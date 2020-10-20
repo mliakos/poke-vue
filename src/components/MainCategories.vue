@@ -1,12 +1,13 @@
 <template>
   <div class="row justify-center">
     <q-card
-      v-for="item in mainItems"
-      :key="item.title"
-      :class="`mainCard bg-${item.color}`"
+      v-for="card in mainCards"
+      :key="getCardName(card)"
+      :class="`mainCard text-white text-bold bg-${getClass(card)}`"
+      @click="handleClick(card)"
     >
       <q-card-section>
-        {{ item.title }}
+        {{ card }}
       </q-card-section>
     </q-card>
   </div>
@@ -15,46 +16,51 @@
 <script>
 export default {
   name: "MainCategories",
+
   data() {
     return {
-      mainItems: [
-        {
-          title: "Pokedex",
-          color: "purple-3"
-        },
-        {
-          title: "Moves",
-          color: "purple-3"
-        },
-        {
-          title: "Abilities",
-          color: "purple-3"
-        },
-        {
-          title: "Items",
-          color: "purple-3"
-        },
-        {
-          title: "Locations",
-          color: "purple-3"
-        },
-        {
-          title: "Type Charts",
-          color: "purple-3"
-        }
+      mainCards: [
+        "Pokedex",
+        "Moves",
+        "Items",
+        "Abilities",
+        "Locations",
+        "TypeCharts"
       ]
     };
   },
-  methods: {}
+  methods: {
+    getClass(card) {
+      let { [card]: color } = this.$colorTheme;
+
+      return color;
+    },
+
+    getCardName(title) {
+      return title.split("").join(" ");
+    },
+
+    handleClick(card) {
+      this.$router.push(card.toLowerCase());
+    }
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .mainCard {
-  border-radius: 10px;
+  border-radius: 15px;
   width: 40%;
   margin-bottom: 10px;
   margin-left: 5px;
   margin-right: 5px;
+  background-image: url("../assets/pokeball.svg");
+  transition: all 0.2s ease-in-out;
+}
+
+.mainCard:hover {
+  cursor: pointer;
+  opacity: 80%;
+  transform: scale(1.05);
 }
 </style>

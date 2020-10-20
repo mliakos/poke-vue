@@ -1,16 +1,15 @@
 <template>
   <q-page class="flex flex-center">
-    <MainCategories />
-    <router-view />
+    <PokemonContainer />
   </q-page>
 </template>
 
 <script>
-import MainCategories from "../components/MainCategories";
+import PokemonContainer from "../components/PokemonContainer";
 export default {
   name: "Index",
   components: {
-    MainCategories
+    PokemonContainer
   }
 };
 </script>
