@@ -8,6 +8,10 @@ const routes = [
       {
         path: "pokedex/:pokemonName",
         component: () => import("pages/Pokemon.vue")
+      },
+      {
+        path: "pokedex/:pokemonName",
+        component: () => import("pages/Pokemon.vue")
       }
     ]
   },

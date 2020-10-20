@@ -14,20 +14,14 @@
 </template>
 
 <script>
+import { cardNames } from "../config/cardNames";
+
 export default {
   name: "MainCategories",
 
   data() {
     return {
-      // TODO: Outsource card names to module and add coded keys
-      mainCards: [
-        "Pokedex",
-        "Moves",
-        "Items",
-        "Abilities",
-        "Locations",
-        "Type Charts"
-      ]
+      mainCards: Object.values(cardNames)
     };
   },
   methods: {
@@ -38,8 +32,7 @@ export default {
     },
 
     handleClick(card) {
-      //TODO: Add .catch method
-      this.$router.push(card.toLowerCase());
+      this.$router.push(card.toLowerCase()).catch(e => console.log(e));
     }
   }
 };

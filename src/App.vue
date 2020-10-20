@@ -6,5 +6,12 @@
 <script>
 export default {
   name: "App"
+
+  // computed: {
+  //   getClassName() {
+  //     // $route === "";
+  //     return `quicksand bg-${"bgColor"}`;
+  //   }
+  // }
 };
 </script>

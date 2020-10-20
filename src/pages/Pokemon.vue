@@ -1,37 +1,21 @@
 <template>
-  <div class="column">
-    {{ $route.params.pokemonName }}
-    <img src="" alt="" />
-
-    <q-card :class="`mainCard text-bold self-end`">
-      <q-card-section>
-        test
-      </q-card-section>
-    </q-card>
-  </div>
+  <PokemonDetails />
 </template>
 
 <script>
+import PokemonDetails from "../components/PokemonDetails";
+
 export default {
   name: "Pokemon",
+  components: {
+    PokemonDetails
+  },
   data() {
     return {
       pokemonData: []
     };
-  },
-  methods: {
-    fetchPokemonData() {}
-  },
-
-  created() {}
+  }
 };
 </script>
 
-<style scoped>
-.mainCard {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  background-color: beige;
-}
-</style>
+<style scoped></style>
