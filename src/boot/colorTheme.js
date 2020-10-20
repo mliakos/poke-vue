@@ -1,10 +1,11 @@
+import { cardNames } from "../config/cardNames";
 import Vue from "vue";
 
 Vue.prototype.$colorTheme = {
-  Pokedex: "green-12",
-  Moves: "red-11",
-  Abilities: "blue-4",
-  Items: "amber-4",
-  Locations: "deep-purple-5",
-  TypeCharts: "brown-6"
+  [cardNames.POKEDEX]: "green-12",
+  [cardNames.MOVES]: "red-11",
+  [cardNames.ABILITIES]: "blue-4",
+  [cardNames.ITEMS]: "amber-4",
+  [cardNames.LOCATIONS]: "deep-purple-5",
+  [cardNames.TYPECHARTS]: "brown-6"
 };

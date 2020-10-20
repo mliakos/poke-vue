@@ -2,7 +2,7 @@
   <div class="row justify-center">
     <q-card
       v-for="card in mainCards"
-      :key="getCardName(card)"
+      :key="card"
       :class="`mainCard text-white text-bold bg-${getClass(card)}`"
       @click="handleClick(card)"
     >
@@ -19,13 +19,14 @@ export default {
 
   data() {
     return {
+      // TODO: Outsource card names to module and add coded keys
       mainCards: [
         "Pokedex",
         "Moves",
         "Items",
         "Abilities",
         "Locations",
-        "TypeCharts"
+        "Type Charts"
       ]
     };
   },
@@ -36,11 +37,8 @@ export default {
       return color;
     },
 
-    getCardName(title) {
-      return title.split("").join(" ");
-    },
-
     handleClick(card) {
+      //TODO: Add .catch method
       this.$router.push(card.toLowerCase());
     }
   }

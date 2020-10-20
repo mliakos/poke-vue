@@ -4,7 +4,11 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/Index.vue") },
-      { path: "pokedex", component: () => import("pages/Pokedex.vue") }
+      { path: "pokedex", component: () => import("pages/Pokedex.vue") },
+      {
+        path: "pokedex/:pokemonName",
+        component: () => import("pages/Pokemon.vue")
+      }
     ]
   },
 

@@ -4,6 +4,7 @@
       v-for="pokemon in pokemonData"
       :key="pokemon.name"
       :class="`mainCard text-bold col-4`"
+      @click="handleClick(pokemon.name)"
     >
       <q-card-section>
         <img
@@ -48,6 +49,10 @@ export default {
       const [, pokemonNumber] = match.split("/");
 
       return `https://cdn.traction.one/pokedex/pokemon/${pokemonNumber}.png`;
+    },
+
+    handleClick(pokemonName) {
+      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
     }
   },
 
