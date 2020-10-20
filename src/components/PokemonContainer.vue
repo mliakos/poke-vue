@@ -52,7 +52,7 @@ export default {
     },
 
     handleClick(pokemonName) {
-      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
+      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}/about`);
     }
   },
 

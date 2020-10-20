@@ -1,6 +1,6 @@
 <template>
   <div class="bg-purple">
-    {{ $route.params.pokemonName }}
+    {{ this.$route.params.pokemonName }}
     <img src="" alt="" />
 
     <q-card :class="`mainCard text-bold self-end`">
@@ -23,6 +23,7 @@
 <script>
 export default {
   name: "PokemonDetails",
+
   data() {
     return {
       activeLink: "About",
@@ -40,9 +41,23 @@ export default {
       if (link !== this.activeLink) {
         this.activeLink = link;
 
-        this.$router.push(
-          `${this.$router.history.current.fullPath}/${this.parsedActiveLink}`
-        );
+        this.$router.push(this.parsedActiveLink);
+      }
+    },
+
+    // Setting active link on explicit route load
+    setActiveLink() {
+      const extractedLink = this.$route.params.activeLink;
+
+      // Capitalizing first letter
+      const link =
+        extractedLink.charAt(0).toUpperCase() + extractedLink.slice(1);
+
+      if (extractedLink === "basestats") {
+        this.activeLink = "Base Stats";
+      } else {
+        //Setting active link
+        this.activeLink = link;
       }
     }
   },
@@ -55,6 +70,9 @@ export default {
         .split(" ")
         .join("");
     }
+  },
+  created() {
+    this.setActiveLink();
   }
 };
 </script>

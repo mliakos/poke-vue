@@ -14,7 +14,25 @@ export default {
     return {
       pokemonData: []
     };
-  }
+  },
+  methods: {
+    async fetchPokemonData() {
+      this.loading = true;
+      const pokemonName = this.$route.params.pokemonName;
+
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+      );
+
+      const parsedResponse =
+        response.status == 200 ? await response.json() : null;
+
+      this.loading = false;
+
+      return parsedResponse;
+    }
+  },
+  created() {}
 };
 </script>
 
