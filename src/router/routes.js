@@ -7,7 +7,7 @@ const routes = [
       { path: "pokedex", component: () => import("pages/Pokedex.vue") },
       {
         path: "pokedex/:pokemonName",
-        component: () => import("pages/Pokemon.vue")
+        redirect: "pokedex/:pokemonName/about"
       },
       {
         path: "pokedex/:pokemonName/:activeLink",
