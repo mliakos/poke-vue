@@ -36,7 +36,7 @@ export default function(/* { store, ssrContext } */) {
       .join("|")
       .toLowerCase();
 
-    const isMatch = to.path.match(`/${matchString}/gi`);
+    const isMatch = to.path.match(new RegExp(matchString, "gi"));
 
     // Excluding tab routing
     if (isMatch === null) {

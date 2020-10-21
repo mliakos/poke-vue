@@ -35,12 +35,3 @@ Vue.prototype.$tabComponents = {
     data: ["description", "weight", "height", "types", "abilities"]
   }
 };
-
-// {
-//     description:
-//       'This would work if the second API would be kind enough to send me a "Access-Control-Allow-Origin: *" header :)',
-//     weight: data.weight,
-//     height: data.height,
-//     types: data.types,
-//     abilities: data.abilities
-//   }
