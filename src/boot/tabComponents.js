@@ -18,7 +18,7 @@ Vue.prototype.$tabComponents = {
     name: "PokemonStats",
 
     // Specifying API response properties to display in tab
-    data: ["description", "weight", "height", "types", "abilities"]
+    data: ["stats"]
   },
   [tabNames.EVOLUTION]: {
     // Component-to-be-rendered name

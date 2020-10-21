@@ -73,7 +73,7 @@ export default {
 
       // Creating object with relevant data from config file
       return tabComponentObject.data.reduce((acc, current) => {
-        // Handling description CORS API bug by providing a static one
+        // Handling description CORS API bug by providing a static value
         if (current == "description") {
           acc[current] =
             'This would work if the second API would be kind enough to send me a "Access-Control-Allow-Origin: *" header :)';
@@ -90,6 +90,7 @@ export default {
   methods: {
     isActive(text) {
       if (text === this.activeLink) return "active";
+      else return "text-grey-5";
     },
 
     handleLinkClick(link) {
@@ -129,6 +130,7 @@ export default {
 
 .link.active {
   border-bottom: 2px solid blue;
+  color: black;
 }
 
 img {
