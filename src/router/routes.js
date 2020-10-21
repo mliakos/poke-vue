@@ -11,7 +11,7 @@ const routes = [
       },
       {
         path: "pokedex/:pokemonName/:activeLink",
-        component: () => import("components/PokemonDetails.vue")
+        component: () => import("pages/Pokemon.vue")
       }
     ]
   },

@@ -14,7 +14,7 @@
         >
       </q-card-section>
       <q-card-section>
-        <router-view></router-view>
+        <router-view>test</router-view>
       </q-card-section>
     </q-card>
   </div>
@@ -31,8 +31,6 @@ export default {
     };
   },
   methods: {
-    fetchPokemonData() {},
-
     isActive(text) {
       if (text === this.activeLink) return "active";
     },
