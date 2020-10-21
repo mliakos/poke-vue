@@ -13,6 +13,10 @@
           >{{ link }}</span
         >
       </q-card-section>
+      <component
+        :pokemonData="generateAboutData"
+        :is="this.$tabComponents[activeLink].name"
+      />
       <q-card-section>
         <router-view>test</router-view>
       </q-card-section>
@@ -21,15 +25,64 @@
 </template>
 
 <script>
+import { tabNames } from "../config/names";
+
+import PokemonAbout from "../components/Tabs/PokemonAbout";
+import PokemonStats from "../components/Tabs/PokemonStats";
+import PokemonEvolution from "../components/Tabs/PokemonEvolution";
+import PokemonMoves from "../components/Tabs/PokemonMoves";
+
 export default {
   name: "PokemonDetails",
-
+  props: {
+    pokemonData: {
+      type: Object,
+      required: true
+    }
+  },
+  components: {
+    PokemonAbout,
+    PokemonStats,
+    PokemonEvolution,
+    PokemonMoves
+  },
   data() {
     return {
       activeLink: "About",
-      links: ["About", "Base Stats", "Evolution", "Moves"]
+      links: Object.values(tabNames)
     };
   },
+
+  computed: {
+    // Necessary processing to use for routing
+    parsedActiveLink() {
+      return this.activeLink
+        .toLowerCase()
+        .split(" ")
+        .join("");
+    },
+
+    // Dynamically generate data to pass to dynamic component tab
+    generateAboutData() {
+      const data = this.pokemonData;
+      const tabComponentObject = this.$tabComponents[this.activeLink];
+
+      // Creating object with relevant data from config file
+      return tabComponentObject.data.reduce((acc, current) => {
+        // Handling description CORS API bug by providing a static one
+        if (current == "description") {
+          acc[current] =
+            'This would work if the second API would be kind enough to send me a "Access-Control-Allow-Origin: *" header :)';
+          return acc;
+        }
+
+        // Dynamically accessing and assigning API response properties to returned object
+        acc[current] = data[current];
+        return acc;
+      }, {});
+    }
+  },
+
   methods: {
     isActive(text) {
       if (text === this.activeLink) return "active";
@@ -57,16 +110,6 @@ export default {
         //Setting active link
         this.activeLink = link;
       }
-    }
-  },
-
-  computed: {
-    // Necessary processing to use for routing
-    parsedActiveLink() {
-      return this.activeLink
-        .toLowerCase()
-        .split(" ")
-        .join("");
     }
   },
   created() {

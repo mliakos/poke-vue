@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { cardNames } from "../config/cardNames";
+import { cardNames } from "../config/names";
 
 export default {
   name: "MainCategories",

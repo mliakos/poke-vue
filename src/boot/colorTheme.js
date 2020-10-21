@@ -1,4 +1,4 @@
-import { cardNames } from "../config/cardNames";
+import { cardNames } from "../config/names";
 import Vue from "vue";
 
 Vue.prototype.$colorTheme = {
