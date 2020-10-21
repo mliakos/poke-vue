@@ -89,7 +89,10 @@ export default {
     },
 
     goBack() {
-      this.$router.replace("/pokedex");
+      this.$router.replace({
+        path: `/pokedex`,
+        query: { yCoordinates: this.$route.query.yCoordinates }
+      });
     },
 
     capitalizeFirstLetter(string) {

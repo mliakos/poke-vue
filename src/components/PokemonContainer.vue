@@ -92,7 +92,10 @@ export default {
     },
 
     handlePokemonClick(pokemonName) {
-      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
+      this.$router.push({
+        path: `/pokedex/${pokemonName.toLowerCase()}`,
+        query: { yCoordinates: window.pageYOffset }
+      });
     },
 
     handleIconClick() {
@@ -103,6 +106,10 @@ export default {
       // FIXME: It accepts an undefined string and throws (UI doesn't crash)
       return capitalizeFirstLetter(string);
     }
+  },
+  updated() {
+    // Return to the same scrolling position
+    window.scroll(0, this.$route.query.yCoordinates);
   }
 };
 </script>
