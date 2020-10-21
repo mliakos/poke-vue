@@ -92,10 +92,10 @@ export default {
     },
 
     handlePokemonClick(pokemonName) {
-      this.$router.push({
-        path: `/pokedex/${pokemonName.toLowerCase()}`,
-        query: { yCoordinates: window.pageYOffset }
-      });
+      // Saving scrolling coordinates
+      this.$route.meta.yCoordinates = window.pageYOffset;
+
+      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
     },
 
     handleIconClick() {
@@ -109,7 +109,7 @@ export default {
   },
   updated() {
     // Return to the same scrolling position
-    window.scroll(0, this.$route.query.yCoordinates);
+    window.scroll(0, this.$route.meta.yCoordinates);
   }
 };
 </script>
