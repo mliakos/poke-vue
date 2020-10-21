@@ -1,12 +1,14 @@
 <template>
-  <div class="bg-purple">
-    {{ this.$route.params.pokemonName }}
-    <img src="" alt="" />
-
+  <div>
     <q-card :class="`mainCard text-bold self-end`">
-      <q-card-section class="row justify-evenly">
+      <img
+        :src="`https://cdn.traction.one/pokedex/pokemon/${pokemonData.id}.png`"
+        :alt="pokemonData.name + ' image'"
+        class="relative-position"
+      />
+      <q-card-section class="row justify-between">
         <span
-          :class="`link q-pa-sm ${isActive(link)}`"
+          :class="`col-auto link q-pa-sm ${isActive(link)}`"
           :key="link"
           v-for="link in links"
           @click="handleLinkClick(link)"
@@ -14,7 +16,7 @@
         >
       </q-card-section>
       <component
-        :pokemonData="generateAboutData"
+        :pokemonData="generateTabData"
         :is="this.$tabComponents[activeLink].name"
       />
       <q-card-section>
@@ -25,8 +27,10 @@
 </template>
 
 <script>
+// Config imports
 import { tabNames } from "../config/names";
 
+// Component imports
 import PokemonAbout from "../components/Tabs/PokemonAbout";
 import PokemonStats from "../components/Tabs/PokemonStats";
 import PokemonEvolution from "../components/Tabs/PokemonEvolution";
@@ -63,7 +67,7 @@ export default {
     },
 
     // Dynamically generate data to pass to dynamic component tab
-    generateAboutData() {
+    generateTabData() {
       const data = this.pokemonData;
       const tabComponentObject = this.$tabComponents[this.activeLink];
 
@@ -100,16 +104,8 @@ export default {
     setActiveLink() {
       const extractedLink = this.$route.params.activeLink;
 
-      // Capitalizing first letter
-      const link =
-        extractedLink.charAt(0).toUpperCase() + extractedLink.slice(1);
-
-      if (extractedLink === "basestats") {
-        this.activeLink = "Base Stats";
-      } else {
-        //Setting active link
-        this.activeLink = link;
-      }
+      //Setting active link based on tabNames config
+      this.activeLink = tabNames[extractedLink.toUpperCase()];
     }
   },
   created() {
@@ -123,8 +119,8 @@ export default {
   width: 100%;
   position: absolute;
   bottom: 0;
-  background-color: blue;
-  border-radius: 28px 28px 0 0;
+  background-color: white;
+  border-radius: 35px 35px 0 0;
 }
 
 .link:hover {
@@ -132,6 +128,15 @@ export default {
 }
 
 .link.active {
-  border-bottom: 1px solid bisque;
+  border-bottom: 2px solid blue;
+}
+
+img {
+  width: 50%;
+  position: relative;
+  top: -160px;
+  margin: 0 auto;
+  margin-bottom: -170px;
+  z-index: 99;
 }
 </style>
