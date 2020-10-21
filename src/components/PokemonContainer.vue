@@ -14,7 +14,7 @@
       <q-card
         v-for="pokemon in pokemonData"
         :key="pokemon.name"
-        :class="`mainCard text-bold col-5`"
+        :class="`mainCard q-ma-sm text-bold col-5`"
         @click="handlePokemonClick(pokemon.name)"
       >
         <q-card-section class="row justify-center">
@@ -30,9 +30,11 @@
       </q-card>
 
       <template v-slot:loading>
-        <div class="row justify-center q-my-md">
-          <q-spinner-dots color="primary" size="40px" />
-        </div>
+        <q-spinner-dots
+          class="col-5 justify-center"
+          color="primary"
+          :size="getSpinnerSize"
+        />
       </template>
     </q-infinite-scroll>
   </div>
@@ -53,8 +55,14 @@ export default {
     };
   },
 
+  computed: {
+    getSpinnerSize() {
+      return window.innerWidth / 5;
+    }
+  },
+
   methods: {
-    async fetchAllPokemon(url, done = null) {
+    async fetchAllPokemon(url) {
       this.loading = true;
 
       const response = await fetch(url);
@@ -73,13 +81,12 @@ export default {
       this.totalPokemon = parsedResponse.count;
       this.nextPage = parsedResponse.next;
       this.pokemonData.push(...parsedResponse.results);
-
-      if (done) done();
     },
 
     async infiniteLoad(index, done) {
       //NOTE: This function runs automatically on some lifecycle hook (created, mounted, etc.). No need to re-run.
       await this.fetchAllPokemon(this.nextPage);
+
       done();
     },
 
@@ -109,14 +116,14 @@ export default {
   },
   updated() {
     // Return to the same scrolling position
-    window.scroll(0, this.$route.meta.yCoordinates);
+    // FIXME: Find alternative method for saving scrolling position
+    // window.scroll(0, this.$route.meta.yCoordinates);
   }
 };
 </script>
 
 <style scoped>
 .mainCard {
-  margin: 5px;
   transition: all 0.2s ease-in-out;
   border-radius: 20px;
 }
