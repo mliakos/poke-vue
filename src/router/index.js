@@ -1,9 +1,13 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-import routes from './routes'
+import routes from "./routes";
 
-Vue.use(VueRouter)
+import EventBus from "../utilities/EventBus";
+
+import { tabNames } from "../config/names";
+
+Vue.use(VueRouter);
 
 /*
  * If not building with SSR mode, you can
@@ -14,7 +18,7 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
-export default function (/* { store, ssrContext } */) {
+export default function(/* { store, ssrContext } */) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -24,7 +28,23 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
-  })
+  });
 
-  return Router
+  // Resetting pokemon type (mainly to ensure that background reverts to white)
+  Router.beforeEach((to, from, next) => {
+    const matchString = Object.keys(tabNames)
+      .join("|")
+      .toLowerCase();
+
+    const isMatch = to.path.match(`/${matchString}/gi`);
+
+    // Excluding tab routing
+    if (isMatch === null) {
+      EventBus.$emit("POKEMON_SELECT", "");
+    }
+
+    next();
+  });
+
+  return Router;
 }

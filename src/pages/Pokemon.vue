@@ -1,18 +1,33 @@
 <template>
   <div>
-    <section class="q-ml-md">
+    <section class="q-mx-md row">
       <q-icon
-        class="q-my-lg"
+        class="q-mt-lg col-1 text-white"
         name="keyboard_backspace"
         size="2rem"
-        @click="handleIconClick"
+        @click="goBack"
       />
+      <q-space class="col-10" />
+      <q-icon
+        class="q-mt-lg col-1 text-white"
+        :name="getFavoriteIcon"
+        size="2rem"
+        @click="toggleFavorite"
+      />
+    </section>
 
-      <h4 class="text-bold q-ma-xs ">
+    <section class="q-ml-md">
+      <h4 class="text-bold q-ma-xs text-white">
         {{ capitalizeFirstLetter(pokemonData.name) }}
       </h4>
-      <q-chip :key="type" v-for="type in getTypes">{{ type }}</q-chip>
+      <q-chip
+        class="text-white text-bold"
+        :key="type"
+        v-for="type in getTypes"
+        >{{ type }}</q-chip
+      >
     </section>
+
     <PokemonDetails :pokemonData="pokemonData" />
   </div>
 </template>
@@ -20,6 +35,7 @@
 <script>
 // Utility imports
 import capitalizeFirstLetter from "../utilities/capitalizeFirstLetter";
+import EventBus from "../utilities/EventBus";
 
 import PokemonDetails from "../components/PokemonDetails";
 
@@ -30,7 +46,8 @@ export default {
   },
   data() {
     return {
-      pokemonData: {}
+      pokemonData: {},
+      isFavorite: false
     };
   },
 
@@ -40,6 +57,13 @@ export default {
       return this.pokemonData.types.map(type =>
         capitalizeFirstLetter(type.type.name)
       );
+    },
+
+    getFavoriteIcon() {
+      if (this.isFavorite) {
+        return "favorite";
+      }
+      return "favorite_border";
     }
   },
 
@@ -60,8 +84,12 @@ export default {
       return parsedResponse;
     },
 
-    handleIconClick() {
-      this.$router.go(-1);
+    toggleFavorite() {
+      this.isFavorite = !this.isFavorite;
+    },
+
+    goBack() {
+      this.$router.replace("/pokedex");
     },
 
     capitalizeFirstLetter(string) {
@@ -75,12 +103,16 @@ export default {
     );
 
     this.pokemonData = pokemonData;
-  },
-  beforeRouteUpdate() {
-    // Emitting first type in order to change background color accordingly
-    // $event.emit([getTypes()]);
+
+    const [mainType] = this.getTypes;
+
+    EventBus.$emit("POKEMON_SELECT", mainType);
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+div.q-chip {
+  background: rgba(255, 255, 255, 0.2);
+}
+</style>

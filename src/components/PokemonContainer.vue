@@ -1,23 +1,37 @@
 <template>
-  <div class="row justify-center">
-    <q-card
-      v-for="pokemon in pokemonData"
-      :key="pokemon.name"
-      :class="`mainCard text-bold col-4`"
-      @click="handleClick(pokemon.name)"
-    >
-      <q-card-section>
-        <img
-          :src="getPokemonNumber(pokemon.url)"
-          :alt="pokemon.name + ' image'"
-        />
-        {{ pokemon.name }}
-      </q-card-section>
-    </q-card>
+  <div class="q-ml-md">
+    <q-icon
+      class="q-my-lg"
+      name="keyboard_backspace"
+      size="2rem"
+      @click="handleIconClick"
+    />
+    <div class="row justify-center">
+      <q-card
+        v-for="pokemon in pokemonData"
+        :key="pokemon.name"
+        :class="`mainCard text-bold col-5`"
+        @click="handlePokemonClick(pokemon.name)"
+      >
+        <q-card-section class="row justify-center">
+          {{ capitalizeFirstLetter(pokemon.name) }}
+        </q-card-section>
+
+        <q-card-section class="row justify-center">
+          <img
+            :src="getPokemonNumber(pokemon.url)"
+            :alt="pokemon.name + ' image'"
+          />
+        </q-card-section>
+      </q-card>
+    </div>
   </div>
 </template>
 
 <script>
+import EventBus from "../utilities/EventBus";
+import capitalizeFirstLetter from "src/utilities/capitalizeFirstLetter";
+
 export default {
   name: "PokemonContainer",
   data() {
@@ -51,8 +65,17 @@ export default {
       return `https://cdn.traction.one/pokedex/pokemon/${pokemonNumber}.png`;
     },
 
-    handleClick(pokemonName) {
+    handlePokemonClick(pokemonName) {
       this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
+    },
+
+    handleIconClick() {
+      this.$router.replace("/");
+    },
+
+    capitalizeFirstLetter(string) {
+      // FIXME: It accepts an undefined string and throws (UI doesn't crash)
+      return capitalizeFirstLetter(string);
     }
   },
 
@@ -80,6 +103,6 @@ export default {
 }
 
 img {
-  width: 50%;
+  width: 70%;
 }
 </style>
