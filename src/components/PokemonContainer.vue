@@ -6,7 +6,11 @@
       size="2rem"
       @click="handleIconClick"
     />
-    <div class="row justify-center">
+    <q-infinite-scroll
+      class="row justify-center"
+      @load="infiniteLoad"
+      :offset="250"
+    >
       <q-card
         v-for="pokemon in pokemonData"
         :key="pokemon.name"
@@ -24,7 +28,13 @@
           />
         </q-card-section>
       </q-card>
-    </div>
+
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots color="primary" size="40px" />
+        </div>
+      </template>
+    </q-infinite-scroll>
   </div>
 </template>
 
@@ -38,23 +48,39 @@ export default {
     return {
       pokemonData: [],
       totalPokemon: 0,
-      nextPage: "",
+      nextPage: "https://pokeapi.co/api/v2/pokemon",
       loading: false
     };
   },
 
   methods: {
-    async fetchAllPokemon() {
+    async fetchAllPokemon(url, done = null) {
       this.loading = true;
 
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon`);
+      const response = await fetch(url);
 
-      const parsedResponse =
-        response.status == 200 ? await response.json() : null;
+      let parsedResponse;
+
+      try {
+        parsedResponse = response.status == 200 ? await response.json() : null;
+      } catch (e) {
+        console.log(response);
+      }
 
       this.loading = false;
 
-      return parsedResponse;
+      // Updating state
+      this.totalPokemon = parsedResponse.count;
+      this.nextPage = parsedResponse.next;
+      this.pokemonData.push(...parsedResponse.results);
+
+      if (done) done();
+    },
+
+    async infiniteLoad(index, done) {
+      //NOTE: This function runs automatically on some lifecycle hook (created, mounted, etc.). No need to re-run.
+      await this.fetchAllPokemon(this.nextPage);
+      done();
     },
 
     getPokemonNumber(url) {
@@ -77,14 +103,6 @@ export default {
       // FIXME: It accepts an undefined string and throws (UI doesn't crash)
       return capitalizeFirstLetter(string);
     }
-  },
-
-  async created() {
-    const pokemonData = await this.fetchAllPokemon();
-
-    // Updating state
-    this.totalPokemon = pokemonData.count;
-    this.pokemonData.push(...pokemonData.results);
   }
 };
 </script>
