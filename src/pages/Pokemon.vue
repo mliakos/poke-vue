@@ -60,7 +60,7 @@ export default {
   computed: {
     // Extracting types and capitalizing first letter
     getTypes() {
-      // FIXME: this.pokemonData.types undefined, USE NAVIGATION GUARDS
+      // FIXME: this.pokemonData.types undefined, for some reason Vue attempts to render before pokemonData is loaded, so before guard runs
       return this.pokemonData.types.map(type => {
         return capitalizeFirstLetter(type.type.name);
       });
@@ -91,7 +91,7 @@ export default {
       this.loading = true;
 
       const response = await fetch(
-        `https://pokeapi.co/api/v2/evolution-chain/${id}`
+        `https://pokeapi.co/api/v2/evolution-chain/${this.getPokemonId}`
       );
 
       let parsedResponse;
@@ -115,46 +115,42 @@ export default {
       this.$router.replace(`/pokedex`);
     },
 
-    capitalizeFirstLetter(string) {
-      return capitalizeFirstLetter(string);
+    capitalizeFirstLetter(value) {
+      return capitalizeFirstLetter(value);
     }
   },
 
   async mounted() {
-    // Getting pokemon type
-    const [mainType] = this.getTypes;
-
-    // Globally emitting type
-    EventBus.$emit("POKEMON_SELECT", mainType);
-
     const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
 
     this.$set(this.pokemonData, "chain", evolutionChain);
   },
 
   async beforeRouteEnter(to, from, next) {
-    const pokemonData = await (async pokemonName => {
-      // Fetching main data
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-      );
+    // Fetching main data
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${to.params.pokemonName}`
+    );
 
-      //TODO: Fetch description, species property and evolution chain URL from 'pokemon-species' endpoint
+    //TODO: Fetch description, species property and evolution chain URL from 'pokemon-species' endpoint
 
-      const parsedResponse =
-        response.status == 200 ? await response.json() : null;
-
-      return parsedResponse;
-    })(to.params.pokemonName);
+    const parsedResponse =
+      response.status == 200 ? await response.json() : null;
 
     next(vm => {
-      vm.pokemonData = pokemonData;
+      vm.pokemonData = parsedResponse;
+
+      // Getting pokemon type
+      const [mainType] = vm.getTypes;
+
+      // Globally emitting type
+      EventBus.$emit("POKEMON_SELECT", mainType);
     });
   }
 };
 
 // TODO: Ability to save favorites in local storage/IndexedDB
-// TODO: Use navigation guards before loading route and show loading state
+// TODO: Use navigation guards before loading route and show skeleton
 </script>
 
 <style scoped>

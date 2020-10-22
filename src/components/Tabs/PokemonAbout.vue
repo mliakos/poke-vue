@@ -35,7 +35,9 @@ export default {
       required: true
     }
   },
-  computed: {
+
+  // IMPORTANT: If this is used as a computed property it throws (Cannot read property 'map' of undefined")
+  methods: {
     getAbilities() {
       return this.pokemonData.abilities
         .map(ability => capitalizeFirstLetter(ability.ability.name))
