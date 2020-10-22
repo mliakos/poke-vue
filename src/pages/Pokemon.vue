@@ -60,9 +60,10 @@ export default {
   computed: {
     // Extracting types and capitalizing first letter
     getTypes() {
-      return this.pokemonData.types.map(type =>
-        capitalizeFirstLetter(type.type.name)
-      );
+      // FIXME: this.pokemonData.types undefined, USE NAVIGATION GUARDS
+      return this.pokemonData.types.map(type => {
+        return capitalizeFirstLetter(type.type.name);
+      });
     },
 
     getFavoriteIcon() {
@@ -86,22 +87,6 @@ export default {
   },
 
   methods: {
-    async fetchPokemonData(pokemonName) {
-      this.loading = true;
-
-      // Fetching main data
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-      );
-
-      const parsedResponse =
-        response.status == 200 ? await response.json() : null;
-
-      this.loading = false;
-
-      return parsedResponse;
-    },
-
     async fetchEvolutionChain(id) {
       this.loading = true;
 
@@ -131,18 +116,11 @@ export default {
     },
 
     capitalizeFirstLetter(string) {
-      // FIXME: It accepts an undefined string and throws (UI doesn't crash)
       return capitalizeFirstLetter(string);
     }
   },
-  async created() {
-    const pokemonData = await this.fetchPokemonData(
-      this.$route.params.pokemonName
-    );
 
-    // Updating state
-    this.pokemonData = pokemonData;
-
+  async mounted() {
     // Getting pokemon type
     const [mainType] = this.getTypes;
 
@@ -152,6 +130,26 @@ export default {
     const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
 
     this.$set(this.pokemonData, "chain", evolutionChain);
+  },
+
+  async beforeRouteEnter(to, from, next) {
+    const pokemonData = await (async pokemonName => {
+      // Fetching main data
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+      );
+
+      //TODO: Fetch description, species property and evolution chain URL from 'pokemon-species' endpoint
+
+      const parsedResponse =
+        response.status == 200 ? await response.json() : null;
+
+      return parsedResponse;
+    })(to.params.pokemonName);
+
+    next(vm => {
+      vm.pokemonData = pokemonData;
+    });
   }
 };
 

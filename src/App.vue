@@ -34,11 +34,13 @@ export default {
     });
   }
 };
+
+//TODO: Write tests
 </script>
 
 <style scoped>
 .view {
-  background: url("./assets/pokeball.svg") no-repeat 120% 50%;
+  background: url("./assets/pokeball.svg") no-repeat 120% 40%;
   background-size: 50%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <q-card class="q-mx-lg q-py-md"
+    <q-card class="q-ma-lg q-py-md"
       ><div class="row q-pl-md">
         <span class="col-4 text-grey-6">HP</span>
         <span class="col-1">{{ getStat("hp") }} </span>

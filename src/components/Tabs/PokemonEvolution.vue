@@ -7,7 +7,7 @@
           `https://cdn.traction.one/pokedex/pokemon/${pokemonData.chain.id}.png`
         "
         alt="test"
-        v-for="evolution in pokemonData.chain.chain['evolves_to']"
+        v-for="evolution in pokemonData.chain"
       />
       <span class="material-icons">
         arrow_forward
@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 img {
-  width: 20%;
+  width: 30%;
   display: inline;
 }
 </style>

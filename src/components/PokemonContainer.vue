@@ -111,7 +111,6 @@ export default {
     },
 
     capitalizeFirstLetter(string) {
-      // FIXME: It accepts an undefined string and throws (UI doesn't crash)
       return capitalizeFirstLetter(string);
     }
   },

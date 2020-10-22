@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card :class="`mainCard text-bold self-end`">
+    <q-card :class="`mainCard text-bold self-end fixed-bottom`">
       <img
         :src="`https://cdn.traction.one/pokedex/pokemon/${pokemonData.id}.png`"
         :alt="pokemonData.name + ' image'"
@@ -118,9 +118,7 @@ export default {
 <style scoped>
 .mainCard {
   width: 100%;
-  height: 40%;
-  position: absolute;
-  bottom: 0;
+  height: 55%;
   background-color: white;
   border-radius: 35px 35px 0 0;
 }
