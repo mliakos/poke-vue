@@ -16,16 +16,22 @@
       />
     </section>
 
-    <section class="q-ml-md">
-      <h4 class="text-bold q-ma-xs text-white">
+    <section class="row q-ml-md">
+      <h4 class="col-10 text-bold q-ma-xs text-white">
         {{ capitalizeFirstLetter(pokemonData.name) }}
       </h4>
+    </section>
+    <section class="row q-mx-md">
       <q-chip
-        class="text-white text-bold"
+        class="text-white text-bold q-ma-xs"
         :key="type"
         v-for="type in getTypes"
         >{{ type }}</q-chip
       >
+      <q-space />
+      <span class="col-1 text-bold q-ma-xs text-white text-subtitle1">
+        {{ getPokemonId }}
+      </span>
     </section>
 
     <PokemonDetails :pokemonData="pokemonData" />
@@ -64,6 +70,18 @@ export default {
         return "favorite";
       }
       return "favorite_border";
+    },
+
+    getPokemonId() {
+      const id = this.pokemonData.id;
+
+      if (id < 10) {
+        return `#00${id}`;
+      } else if (id >= 10 && id < 100) {
+        return `#0${id}`;
+      }
+
+      return `#${id}`;
     }
   },
 
