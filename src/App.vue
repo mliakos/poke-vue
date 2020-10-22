@@ -1,6 +1,9 @@
 <template>
   <div id="q-app" class="quicksand">
-    <router-view :style="`background-color: #${backgroundColor}`" />
+    <router-view
+      class="view"
+      :style="`background-color: #${backgroundColor}`"
+    />
   </div>
 </template>
 <script>
@@ -33,4 +36,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.view {
+  background: url("./assets/pokeball.svg") no-repeat 120% 50%;
+  background-size: 50%;
+}
+</style>
