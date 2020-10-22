@@ -83,8 +83,9 @@ export default {
       this.pokemonData.push(...parsedResponse.results);
     },
 
+    //NOTE: This function runs automatically on some lifecycle hook (created, mounted, etc.). No need to re-run.
     async infiniteLoad(index, done) {
-      //NOTE: This function runs automatically on some lifecycle hook (created, mounted, etc.). No need to re-run.
+      // Next pokemon fetch cycle
       await this.fetchAllPokemon(this.nextPage);
 
       done();

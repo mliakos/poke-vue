@@ -52,7 +52,9 @@ export default {
   },
   data() {
     return {
-      pokemonData: {},
+      pokemonData: {
+        chain: {}
+      },
       isFavorite: false
     };
   },
@@ -102,6 +104,26 @@ export default {
       return parsedResponse;
     },
 
+    async fetchEvolutionChain(id) {
+      this.loading = true;
+
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/evolution-chain/${id}`
+      );
+
+      let parsedResponse;
+
+      try {
+        parsedResponse = response.status == 200 ? await response.json() : null;
+      } catch (e) {
+        console.log(response);
+      }
+
+      this.loading = false;
+
+      return parsedResponse;
+    },
+
     toggleFavorite() {
       this.isFavorite = !this.isFavorite;
     },
@@ -120,13 +142,23 @@ export default {
       this.$route.params.pokemonName
     );
 
+    // Updating state
     this.pokemonData = pokemonData;
 
+    // Getting pokemon type
     const [mainType] = this.getTypes;
 
+    // Globally emitting type
     EventBus.$emit("POKEMON_SELECT", mainType);
+
+    const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
+
+    this.pokemonData.chain = evolutionChain;
   }
 };
+
+// TODO: Ability to save favorites in local storage/IndexedDB
+// TODO: Use navigation guards before loading route and show loading state
 </script>
 
 <style scoped>

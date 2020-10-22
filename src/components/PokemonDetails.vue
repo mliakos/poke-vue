@@ -15,13 +15,13 @@
           >{{ link }}</span
         >
       </q-card-section>
+
+      <!-- Dynamic tab component rendering -->
       <component
         :pokemonData="generateTabData"
         :is="this.$tabComponents[activeLink].name"
+        class="q-mb-lg"
       />
-      <q-card-section>
-        <router-view>test</router-view>
-      </q-card-section>
     </q-card>
   </div>
 </template>
@@ -71,8 +71,16 @@ export default {
       const data = this.pokemonData;
       const tabComponentObject = this.$tabComponents[this.activeLink];
 
-      // Creating object with relevant data from config file
+      // Creating object with relevant data from config file, by reducing main data object
       return tabComponentObject.data.reduce((acc, current) => {
+        console.log(
+          "OBJECT= ",
+          data,
+          "KEY= ",
+          current,
+          "RESULT= ",
+          data[current]
+        );
         // Handling description CORS API bug by providing a static value
         if (current == "description") {
           acc[current] =
@@ -80,8 +88,11 @@ export default {
           return acc;
         }
 
+        //FIXME: this.pokemonData is undefined in direct navigation to Evolution tab (Check reactivity section https://vuejs.org/v2/guide/reactivity.html)
+
         // Dynamically accessing and assigning API response properties to returned object
         acc[current] = data[current];
+
         return acc;
       }, {});
     }
@@ -89,8 +100,7 @@ export default {
 
   methods: {
     isActive(text) {
-      if (text === this.activeLink) return "active";
-      else return "text-grey-5";
+      return text === this.activeLink ? "active" : "text-grey-5";
     },
 
     handleLinkClick(link) {
@@ -118,6 +128,7 @@ export default {
 <style scoped>
 .mainCard {
   width: 100%;
+  height: 40%;
   position: absolute;
   bottom: 0;
   background-color: white;
