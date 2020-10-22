@@ -73,22 +73,12 @@ export default {
 
       // Creating object with relevant data from config file, by reducing main data object
       return tabComponentObject.data.reduce((acc, current) => {
-        console.log(
-          "OBJECT= ",
-          data,
-          "KEY= ",
-          current,
-          "RESULT= ",
-          data[current]
-        );
         // Handling description CORS API bug by providing a static value
         if (current == "description") {
           acc[current] =
             'This would work if the second API would be kind enough to send me a "Access-Control-Allow-Origin: *" header :)';
           return acc;
         }
-
-        //FIXME: this.pokemonData is undefined in direct navigation to Evolution tab (Check reactivity section https://vuejs.org/v2/guide/reactivity.html)
 
         // Dynamically accessing and assigning API response properties to returned object
         acc[current] = data[current];

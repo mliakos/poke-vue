@@ -52,9 +52,7 @@ export default {
   },
   data() {
     return {
-      pokemonData: {
-        chain: {}
-      },
+      pokemonData: {},
       isFavorite: false
     };
   },
@@ -153,7 +151,7 @@ export default {
 
     const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
 
-    this.pokemonData.chain = evolutionChain;
+    this.$set(this.pokemonData, "chain", evolutionChain);
   }
 };
 
