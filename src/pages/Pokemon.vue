@@ -52,7 +52,19 @@ export default {
   },
   data() {
     return {
-      pokemonData: { types: [], name: "", abilities: [] },
+      //NOTE: The object's structure needs to be defined beforehand, because it is used in computed properties and thus Vue accesses data before rendering.
+      pokemonData: {
+        types: [],
+        stats: [],
+        name: "",
+        abilities: [],
+        species: {},
+        evolutionChain: {
+          chain: {
+            evolves_to: []
+          }
+        }
+      },
       isFavorite: false
     };
   },
@@ -60,7 +72,6 @@ export default {
   computed: {
     // Extracting types and capitalizing first letter
     getTypes() {
-      // FIXME: this.pokemonData.types undefined, for some reason Vue attempts to render before pokemonData is loaded, so before guard runs
       return this.pokemonData.types.map(type => {
         return capitalizeFirstLetter(type.type.name);
       });
@@ -87,36 +98,14 @@ export default {
   },
 
   methods: {
-    async fetchPokemonData(pokemonName) {
+    async fetchData(url) {
       this.loading = true;
 
       // Fetching main data
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-      );
+      const response = await fetch(url);
 
       const parsedResponse =
         response.status == 200 ? await response.json() : null;
-
-      this.loading = false;
-
-      return parsedResponse;
-    },
-
-    async fetchEvolutionChain(id) {
-      this.loading = true;
-
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/evolution-chain/${this.getPokemonId}`
-      );
-
-      let parsedResponse;
-
-      try {
-        parsedResponse = response.status == 200 ? await response.json() : null;
-      } catch (e) {
-        console.log(response);
-      }
 
       this.loading = false;
 
@@ -137,8 +126,9 @@ export default {
   },
 
   async mounted() {
-    const pokemonData = await this.fetchPokemonData(
-      this.$route.params.pokemonName
+    // Fetching main data
+    const pokemonData = await this.fetchData(
+      `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonName}`
     );
 
     this.pokemonData = pokemonData;
@@ -146,12 +136,29 @@ export default {
     // Getting pokemon type
     const [mainType] = this.getTypes;
 
-    // Globally emitting type
+    // Globally emitting type (mainly for background selection)
     EventBus.$emit("POKEMON_SELECT", mainType);
 
-    const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
+    // Fetching species data (additional data)
+    const pokemonSpeciesData = await this.fetchData(
+      `https://pokeapi.co/api/v2/pokemon-species/${this.pokemonData.id}`
+    );
 
-    this.$set(this.pokemonData, "chain", evolutionChain);
+    // this.pokemonData.species = pokemonSpeciesData;
+    this.$set(this.pokemonData, "species", pokemonSpeciesData);
+
+    // Fetching evolution chain data
+    const evolutionChain = await this.fetchData(
+      this.pokemonData.species.evolution_chain.url
+    );
+
+    /*
+    // NOTE: If evolutionChain is set using normal assignment (this.pokemonData instead of $set) then it is passed down from PokemonDetails
+    //  down to PokemonEvolution as undefined.
+    */
+
+    // this.pokemonData.evolutionChain = evolutionChain;
+    this.$set(this.pokemonData, "evolutionChain", evolutionChain);
   }
 };
 
