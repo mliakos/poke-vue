@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      pokemonData: {},
+      pokemonData: { types: [], name: "", abilities: [] },
       isFavorite: false
     };
   },
