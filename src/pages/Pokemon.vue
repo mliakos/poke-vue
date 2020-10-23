@@ -87,6 +87,22 @@ export default {
   },
 
   methods: {
+    async fetchPokemonData(pokemonName) {
+      this.loading = true;
+
+      // Fetching main data
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+      );
+
+      const parsedResponse =
+        response.status == 200 ? await response.json() : null;
+
+      this.loading = false;
+
+      return parsedResponse;
+    },
+
     async fetchEvolutionChain(id) {
       this.loading = true;
 
@@ -121,31 +137,21 @@ export default {
   },
 
   async mounted() {
+    const pokemonData = await this.fetchPokemonData(
+      this.$route.params.pokemonName
+    );
+
+    this.pokemonData = pokemonData;
+
+    // Getting pokemon type
+    const [mainType] = this.getTypes;
+
+    // Globally emitting type
+    EventBus.$emit("POKEMON_SELECT", mainType);
+
     const evolutionChain = await this.fetchEvolutionChain(this.pokemonData.id);
 
     this.$set(this.pokemonData, "chain", evolutionChain);
-  },
-
-  async beforeRouteEnter(to, from, next) {
-    // Fetching main data
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${to.params.pokemonName}`
-    );
-
-    //TODO: Fetch description, species property and evolution chain URL from 'pokemon-species' endpoint
-
-    const parsedResponse =
-      response.status == 200 ? await response.json() : null;
-
-    next(vm => {
-      vm.pokemonData = parsedResponse;
-
-      // Getting pokemon type
-      const [mainType] = vm.getTypes;
-
-      // Globally emitting type
-      EventBus.$emit("POKEMON_SELECT", mainType);
-    });
   }
 };
 
