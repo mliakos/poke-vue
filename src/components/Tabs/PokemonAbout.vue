@@ -53,13 +53,13 @@ export default {
 
     // Getting random description from array
     generateDescription() {
-      const descriptionsArray = this.pokemonData.species.flavor_text_entries;
-      // .filter(entry => entry.language.name === 'en)
+      const descriptionsArray = this.pokemonData.species.flavor_text_entries.filter(
+        entry => entry.language.name === "en"
+      );
 
-      //FIXME: This doesn't work when directly accessing route
-      // const index = Math.floor(Math.random() * descriptionsArray.length);
+      const index = Math.floor(Math.random() * descriptionsArray.length);
 
-      return descriptionsArray[0].flavor_text;
+      return descriptionsArray[index].flavor_text;
     }
   }
 };

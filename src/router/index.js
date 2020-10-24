@@ -9,6 +9,12 @@ import { tabNames } from "../config/names";
 
 Vue.use(VueRouter);
 
+// Vue.use({
+//   data: {
+//     key: null
+//   }
+// });
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -42,6 +48,14 @@ export default function(/* { store, ssrContext } */) {
     if (isMatch === null) {
       EventBus.$emit("POKEMON_SELECT", "");
     }
+
+    // NOTE: Possible fix for no re-render when switching pokemon route
+    /* Checking whether any router record exists for this path, that needs to be re-rendered */
+    // if (to.matched.some(record => record.meta.reuse === false)) {
+    //   Router.key = to.path;
+    // } else {
+    //   Router.key = null;
+    // }
 
     next();
   });

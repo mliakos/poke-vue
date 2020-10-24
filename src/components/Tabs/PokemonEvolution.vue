@@ -65,7 +65,7 @@ export default {
           const [id] = evolution.species.url.match(/\/\d+\//g);
           finalArray.push({
             name: evolution.species.name,
-            //TODO: Handle situtations where evolution takes place over another trigger (use-item, stones, etc.)
+            // FIXME: Handle situtations where evolution takes place over another trigger (use-item, stones, etc.)
             level: evolution.evolution_details[0].min_level,
             id: id.split("/")[1]
           });
@@ -123,13 +123,10 @@ export default {
 
   methods: {
     handleBadgeClick(pokemonName) {
-      this.$router.go(`/pokedex/${pokemonName.toLowerCase()}/about`);
+      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
     }
   }
 };
-
-//TODO: Finish 'Evolution' tab
-//TODO: Complete 'Moves' Tab
 </script>
 
 <style scoped>

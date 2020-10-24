@@ -11,7 +11,10 @@ const routes = [
       },
       {
         path: "pokedex/:pokemonName/:activeLink",
-        component: () => import("pages/Pokemon.vue")
+        component: () => import("pages/Pokemon.vue"),
+
+        // Using this meta prop to force Vue to re-render the component (used when wanting to switch pokemon from another pokemon's profile)
+        meta: { reuse: false }
       }
     ]
   },
