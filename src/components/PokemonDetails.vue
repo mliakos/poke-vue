@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="pokemonData.id">
     <q-card :class="`mainCard text-bold self-end fixed-bottom`">
       <img
         :src="`https://cdn.traction.one/pokedex/pokemon/${pokemonData.id}.png`"
