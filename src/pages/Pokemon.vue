@@ -168,7 +168,7 @@ export default {
     // Toggling favorite
     this.isFavorite = JSON.parse(
       localStorage.getItem(this.pokemonData.id)
-    ).isFavorite;
+    )?.isFavorite;
   }
 };
 
