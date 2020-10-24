@@ -58,6 +58,7 @@ export default {
         stats: [],
         name: "",
         abilities: [],
+        moves: [],
         species: {},
         evolutionChain: {
           chain: {

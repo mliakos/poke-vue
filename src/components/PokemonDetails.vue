@@ -71,15 +71,8 @@ export default {
       const data = this.pokemonData;
       const tabComponentObject = this.$tabComponents[this.activeLink];
 
-      // Creating object with relevant data from config file, by reducing main data object
+      // Creating object with relevant data extracted from main data object using config file
       return tabComponentObject.data.reduce((acc, current) => {
-        // Handling description CORS API bug by providing a static value
-        if (current == "description") {
-          acc[current] =
-            'This would work if the second API would be kind enough to send me a "Access-Control-Allow-Origin: *" header :)';
-          return acc;
-        }
-
         // Dynamically accessing and assigning API response properties to returned object
         acc[current] = data[current];
 

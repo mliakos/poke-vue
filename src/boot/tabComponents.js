@@ -11,7 +11,7 @@ Vue.prototype.$tabComponents = {
     name: "PokemonAbout",
 
     // Specifying API response properties to display in tab
-    data: ["description", "weight", "height", "types", "abilities"]
+    data: ["species", "weight", "height", "types", "abilities"]
   },
   [tabNames.BASESTATS]: {
     // Component-to-be-rendered name
@@ -25,13 +25,13 @@ Vue.prototype.$tabComponents = {
     name: "PokemonEvolution",
 
     // Specifying API response properties to display in tab
-    data: ["evolutionChain"]
-  }
-  // [tabNames.MOVES]: {
-  //   // Component-to-be-rendered name
-  //   name: "PokemonMoves",
+    data: ["evolutionChain", "name", "id"]
+  },
+  [tabNames.MOVES]: {
+    // Component-to-be-rendered name
+    name: "PokemonMoves",
 
-  //   // Specifying API response properties to display in tab
-  //   data: ["description", "weight", "height", "types", "abilities"]
-  // }
+    // Specifying API response properties to display in tab
+    data: ["moves"]
+  }
 };
