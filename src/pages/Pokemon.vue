@@ -115,6 +115,10 @@ export default {
 
     toggleFavorite() {
       this.isFavorite = !this.isFavorite;
+      localStorage.setItem(
+        this.pokemonData.id,
+        JSON.stringify({ isFavorite: this.isFavorite })
+      );
     },
 
     goBack() {
@@ -160,11 +164,15 @@ export default {
 
     // this.pokemonData.evolutionChain = evolutionChain;
     this.$set(this.pokemonData, "evolutionChain", evolutionChain);
+
+    // Toggling favorite
+    this.isFavorite = JSON.parse(
+      localStorage.getItem(this.pokemonData.id)
+    ).isFavorite;
   }
 };
 
-// TODO: Ability to save favorites in local storage/IndexedDB
-// TODO: Use navigation guards before loading route and show skeleton
+// TODO: Show skeleton after navigating to route
 </script>
 
 <style scoped>
