@@ -99,6 +99,47 @@ export default {
   },
 
   methods: {
+    async initializeComponent(pokemonName) {
+      // Fetching main data
+      const pokemonData = await this.fetchData(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+      );
+
+      this.pokemonData = pokemonData;
+
+      // Getting pokemon type
+      const [mainType] = this.getTypes;
+
+      // Globally emitting type (mainly for background selection)
+      EventBus.$emit("POKEMON_SELECT", mainType);
+
+      // Fetching species data (additional data)
+      const pokemonSpeciesData = await this.fetchData(
+        `https://pokeapi.co/api/v2/pokemon-species/${this.pokemonData.id}`
+      );
+
+      // this.pokemonData.species = pokemonSpeciesData;
+      this.$set(this.pokemonData, "species", pokemonSpeciesData);
+
+      // Fetching evolution chain data
+      const evolutionChain = await this.fetchData(
+        this.pokemonData.species.evolution_chain.url
+      );
+
+      /*
+    // NOTE: If evolutionChain is set using normal assignment (this.pokemonData instead of $set) then it is passed down from PokemonDetails
+    //  down to PokemonEvolution as undefined.
+    */
+
+      // this.pokemonData.evolutionChain = evolutionChain;
+      this.$set(this.pokemonData, "evolutionChain", evolutionChain);
+
+      // Toggling favorite
+      this.isFavorite = JSON.parse(
+        localStorage.getItem(this.pokemonData.id)
+      )?.isFavorite;
+    },
+
     async fetchData(url) {
       this.loading = true;
 
@@ -131,44 +172,12 @@ export default {
   },
 
   async mounted() {
-    // Fetching main data
-    const pokemonData = await this.fetchData(
-      `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonName}`
-    );
+    this.initializeComponent(this.$route.params.pokemonName);
 
-    this.pokemonData = pokemonData;
-
-    // Getting pokemon type
-    const [mainType] = this.getTypes;
-
-    // Globally emitting type (mainly for background selection)
-    EventBus.$emit("POKEMON_SELECT", mainType);
-
-    // Fetching species data (additional data)
-    const pokemonSpeciesData = await this.fetchData(
-      `https://pokeapi.co/api/v2/pokemon-species/${this.pokemonData.id}`
-    );
-
-    // this.pokemonData.species = pokemonSpeciesData;
-    this.$set(this.pokemonData, "species", pokemonSpeciesData);
-
-    // Fetching evolution chain data
-    const evolutionChain = await this.fetchData(
-      this.pokemonData.species.evolution_chain.url
-    );
-
-    /*
-    // NOTE: If evolutionChain is set using normal assignment (this.pokemonData instead of $set) then it is passed down from PokemonDetails
-    //  down to PokemonEvolution as undefined.
-    */
-
-    // this.pokemonData.evolutionChain = evolutionChain;
-    this.$set(this.pokemonData, "evolutionChain", evolutionChain);
-
-    // Toggling favorite
-    this.isFavorite = JSON.parse(
-      localStorage.getItem(this.pokemonData.id)
-    )?.isFavorite;
+    // Load pokemon by listening to child event (evolution)
+    EventBus.$on("LOAD_POKEMON", async pokemonName => {
+      this.initializeComponent(pokemonName);
+    });
   }
 };
 

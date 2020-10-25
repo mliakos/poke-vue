@@ -43,6 +43,7 @@
 
 <script>
 import capitalizeFirstLetter from "../../utilities/capitalizeFirstLetter";
+import EventBus from "../../utilities/EventBus";
 
 export default {
   name: "PokemonEvolution",
@@ -123,7 +124,12 @@ export default {
 
   methods: {
     handleBadgeClick(pokemonName) {
-      this.$router.go(`/pokedex/${pokemonName.toLowerCase()}`);
+      if (pokemonName.toLowerCase() !== this.pokemonData.name.toLowerCase()) {
+        this.$router.replace(`/pokedex/${pokemonName.toLowerCase()}`);
+
+        // Emitting event to grandparent (Pokemon) component in order to re-fetch data and cause a new render
+        EventBus.$emit("LOAD_POKEMON", pokemonName.toLowerCase());
+      }
     }
   }
 };
