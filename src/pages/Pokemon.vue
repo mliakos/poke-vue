@@ -178,6 +178,10 @@ export default {
     EventBus.$on("LOAD_POKEMON", async pokemonName => {
       this.initializeComponent(pokemonName);
     });
+  },
+
+  beforeDestroy() {
+    EventBus.$off("LOAD_POKEMON");
   }
 };
 
