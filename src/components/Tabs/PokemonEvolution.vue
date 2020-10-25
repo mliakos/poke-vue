@@ -123,7 +123,7 @@ export default {
 
   methods: {
     handleBadgeClick(pokemonName) {
-      this.$router.push(`/pokedex/${pokemonName.toLowerCase()}`);
+      this.$router.go(`/pokedex/${pokemonName.toLowerCase()}`);
     }
   }
 };

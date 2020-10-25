@@ -1,14 +1,16 @@
 {
   "name": "poke-vue-quasar",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Pokedex",
+  "productName": "Pokedex built with Vue.js",
   "author": "Manos Liakos <manosliakoss@gmail.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev"
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "serve": "quasar serve"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
