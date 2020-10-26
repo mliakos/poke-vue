@@ -16,6 +16,7 @@
         :key="pokemon.name"
         :class="`mainCard q-ma-sm text-bold col-5`"
         @click="handlePokemonClick(pokemon.name)"
+        data-testid="pokemonCard"
       >
         <q-card-section class="row justify-center">
           {{ capitalizeFirstLetter(pokemon.name) }}
@@ -49,7 +50,6 @@ export default {
   data() {
     return {
       pokemonData: [],
-      totalPokemon: 0,
       nextPage: "https://pokeapi.co/api/v2/pokemon",
       loading: false
     };
@@ -78,7 +78,6 @@ export default {
       this.loading = false;
 
       // Updating state
-      this.totalPokemon = parsedResponse.count;
       this.nextPage = parsedResponse.next;
       this.pokemonData.push(...parsedResponse.results);
     },
