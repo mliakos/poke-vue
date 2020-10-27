@@ -23,10 +23,7 @@
         </q-card-section>
 
         <q-card-section class="row justify-center">
-          <img
-            :src="getPokemonNumber(pokemon.url)"
-            :alt="pokemon.name + ' image'"
-          />
+          <img :src="imageSource(pokemon.url)" :alt="pokemon.name + ' image'" />
         </q-card-section>
       </q-card>
 
@@ -90,7 +87,7 @@ export default {
       done();
     },
 
-    getPokemonNumber(url) {
+    imageSource(url) {
       const [match] = url.match(/(\/)(\d+)(\/)/g);
 
       const [, pokemonNumber] = match.split("/");

@@ -40,43 +40,94 @@ afterEach(() => {
 
 // Component test suite
 describe("PokemonContainer", () => {
+  // Spying on fetch method before mounting component
+  const spiedFetchAllPokemon = jest.spyOn(
+    PokemonContainer.methods,
+    "fetchAllPokemon"
+  );
+
+  // Mounting component instance
   const wrapper = mountQuasar(PokemonContainer, {
     mount: {
       type: "full",
       localVue,
       router
     },
+
     quasar: {
       components: components
     }
   });
 
-  it("renders 20 pokemon on page load", async () => {
-    // Wait for pokemon to be rendered to the DOM
-    await wrapper.vm.$nextTick();
+  // Testing side effects
+  describe("Side effects suite", () => {
+    it("renders 20 pokemon on page load", async () => {
+      // Wait for pokemon to be rendered to the DOM
+      await wrapper.vm.$nextTick();
 
-    // Getting cards
-    const pokemonCards = wrapper.findAll("[data-testid='pokemonCard']");
+      // Getting cards
+      const pokemonCards = wrapper.findAll("[data-testid='pokemonCard']");
 
-    // expect(wrapper.html()).toMatchSnapshot();
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(pokemonCards).toHaveLength(20);
+      // expect(wrapper.html()).toMatchSnapshot();
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(pokemonCards).toHaveLength(20);
+    });
+
+    it("loads correct route on pokemon card click", async () => {
+      // Wait for pokemon to be rendered to the DOM
+      await wrapper.vm.$nextTick();
+
+      // Getting cards
+      const pokemonCards = wrapper.findAll("[data-testid='pokemonCard']");
+
+      // Testing on first pokemon
+      const firstPokemon = pokemonCards.at(0);
+      const firstPokemonName = firstPokemon.find("div").text();
+
+      firstPokemon.trigger("click");
+
+      expect(wrapper.vm.$route.path).toEqual(
+        `/pokedex/${firstPokemonName.toLowerCase()}`
+      );
+    });
   });
 
-  it("loads correct route on pokemon card click", async () => {
-    // Wait for pokemon to be rendered to the DOM
-    await wrapper.vm.$nextTick();
+  // Testing methods
+  describe("Methods suite", () => {
+    // imageSource method
+    it("correctly calculates image src from given pokemon url", () => {
+      // Test URLs
+      const firstURL = wrapper.vm.imageSource(
+        "https://pokeapi.co/api/v2/pokemon/1/"
+      );
+      const secondURL = wrapper.vm.imageSource(
+        "https://pokeapi.co/api/v2/pokemon/23/"
+      );
+      const thirdURL = wrapper.vm.imageSource(
+        "https://pokeapi.co/api/v2/pokemon/295/"
+      );
+      const fourthURL = wrapper.vm.imageSource(
+        "https://pokeapi.co/api/v2/pokemon/1000/"
+      );
 
-    // Getting cards
-    const pokemonCards = wrapper.findAll("[data-testid='pokemonCard']");
+      // Assertions
+      expect(firstURL).toEqual(
+        `https://cdn.traction.one/pokedex/pokemon/1.png`
+      );
+      expect(secondURL).toEqual(
+        `https://cdn.traction.one/pokedex/pokemon/23.png`
+      );
+      expect(thirdURL).toEqual(
+        `https://cdn.traction.one/pokedex/pokemon/295.png`
+      );
+      expect(fourthURL).toEqual(
+        `https://cdn.traction.one/pokedex/pokemon/1000.png`
+      );
+    });
 
-    // Testing on first pokemon
-    const firstPokemon = pokemonCards.at(0);
-    const firstPokemonName = firstPokemon.find("div").text();
-
-    firstPokemon.trigger("click");
-    expect(wrapper.vm.$route.path).toEqual(
-      `/pokedex/${firstPokemonName.toLowerCase()}`
-    );
+    // fetchAllPokemon method
+    it("should successfully call fetchAllPokemon method", () => {
+      expect(spiedFetchAllPokemon).toHaveBeenCalledTimes(1);
+    });
   });
 });
