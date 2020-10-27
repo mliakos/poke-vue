@@ -12,7 +12,7 @@ import {
   QSpinnerDots
 } from "quasar";
 
-import apiResponse from "../__mocks__/apiResponse";
+import mockData from "../__mocks__/PokemonContainerData";
 
 const components = {
   QInfiniteScroll,
@@ -30,7 +30,7 @@ const router = new VueRouter();
 global.fetch = jest.fn(() =>
   Promise.resolve({
     status: 200,
-    json: () => Promise.resolve(apiResponse)
+    json: () => Promise.resolve(mockData)
   })
 );
 
