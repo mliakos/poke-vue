@@ -1,5 +1,5 @@
 <template>
-  <div class="q-ml-md">
+  <div class="q-ml-md" v-if="pokemonData">
     <q-icon
       class="q-my-lg"
       name="keyboard_backspace"
@@ -41,43 +41,21 @@
 <script>
 import EventBus from "../utilities/EventBus";
 import capitalizeFirstLetter from "src/utilities/capitalizeFirstLetter";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "PokemonContainer",
-  data() {
-    return {
-      pokemonData: [],
-      nextPage: "https://pokeapi.co/api/v2/pokemon",
-      loading: false
-    };
-  },
 
   computed: {
     getSpinnerSize() {
       return window.innerWidth / 5;
-    }
+    },
+
+    ...mapState(["pokemonData", "nextPage", "loading"])
   },
 
   methods: {
-    async fetchAllPokemon(url) {
-      this.loading = true;
-
-      const response = await fetch(url);
-
-      let parsedResponse;
-
-      try {
-        parsedResponse = response.status == 200 ? await response.json() : null;
-      } catch (e) {
-        console.log(response);
-      }
-
-      this.loading = false;
-
-      // Updating state
-      this.nextPage = parsedResponse.next;
-      this.pokemonData.push(...parsedResponse.results);
-    },
+    ...mapActions(["fetchAllPokemon"]),
 
     //NOTE: This function runs automatically on some lifecycle hook (created, mounted, etc.). No need to re-run.
     async infiniteLoad(index, done) {
